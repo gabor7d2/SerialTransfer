@@ -1,0 +1,41 @@
+0001 0000 + 0000 0100 = 0001 0100
+0001 0000 + 1000 0100 = 0000 1100
+
+dpi #$38
+fa38
+dpi #$0F
+fa0f
+dpi #$06
+fa06
+
+ldb #0
+0200
+
+jmp :display_loop
+140014
+
+var char_size = 8
+08
+"Welcome!"
+57656c636f6d6521
+
+0014: display_loop:
+dpd b #$0C
+fb0c
+inb
+0b
+sbc $0b
+230b
+bcc :display_loop
+1614
+
+lda #6
+0106
+ldb #1
+0201
+ldc #128
+0380
+
+nop_loop:
+jmp :nop_loop
+140021
