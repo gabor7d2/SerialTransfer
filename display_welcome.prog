@@ -1,12 +1,12 @@
 0001 0000 + 0000 0100 = 0001 0100
 0001 0000 + 1000 0100 = 0000 1100
 
-dpi #$38
+dpi #01 // Clear+reset display
+fa01
+dpi #38 // Function set (8-bit, 2 lines, 5x8 char size)
 fa38
-dpi #$0F
-fa0f
-dpi #$06
-fa06
+dpi #0e // Display on, cursor on, blinking off
+fa0e
 
 ldb #0
 0200

@@ -13,10 +13,10 @@ enum class FlagsState(val state: Int) {
     NONE(0);
 
     fun matchFlags(flags: Int): Boolean {
-        val z = flags.extractBits(1, 3)
-        val c = flags.extractBits(1, 2)
-        val o = flags.extractBits(1, 1)
-        val n = flags.extractBits(1, 0)
+        val z = flags.extractBits(1, 0)
+        val c = flags.extractBits(1, 1)
+        val o = flags.extractBits(1, 2)
+        val n = flags.extractBits(1, 3)
         return when (this) {
             ANY -> true
             NOT_ZERO -> z == 0
@@ -62,7 +62,7 @@ fun setupInstructions() {
     addInstruction(3, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, CI)) // LDC - imm
 
     addInstruction(10, FlagsState.ANY, listOf(ALS0, ALS1, ALC, AO, ALW, FW), listOf(ALO, AI)) // INA
-    addInstruction(11, FlagsState.ANY, listOf(ALS0, ALS1, ALC, AO, ALW, FW), listOf(ALO, BI)) // INB
+    addInstruction(11, FlagsState.ANY, listOf(ALS0, ALS1, ALC, BO, ALW, FW), listOf(ALO, BI)) // INB
 
     addInstruction(20, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, PCHI), listOf(PCLO, MALI), listOf(ME, PCLI)) // JMP - abs
     //addInstruction(21, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, BI), listOf(ALS0, ALS1, ALB, PCLO, ALW), listOf(ALO, PCLI)) // BCS - rel
@@ -78,17 +78,17 @@ fun setupInstructions() {
 
     addInstruction(30, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALS1, ALB, ALC, ME, ALW, FW)) // ADC - imm
     addInstruction(30, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALS1, ALB, ME, ALW, FW)) // ADC - imm
-    addInstruction(31, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(PCC, ALS0, ALS1, ALB, ALC, ME, ALW, FW)) // ADC - abs-c
-    addInstruction(31, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(PCC, ALS0, ALS1, ALB, ME, ALW, FW)) // ADC - abs-c
-    addInstruction(32, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(PCC, ALS0, ALS1, ALB, ALC, ME, ALW, FW)) // ADC - abs-pg
-    addInstruction(32, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(PCC, ALS0, ALS1, ALB, ME, ALW, FW)) // ADC - abs-pg
+    addInstruction(31, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(ALS0, ALS1, ALB, ALC, ME, ALW, FW)) // ADC - abs-c
+    addInstruction(31, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(ALS0, ALS1, ALB, ME, ALW, FW)) // ADC - abs-c
+    addInstruction(32, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(ALS0, ALS1, ALB, ALC, ME, ALW, FW)) // ADC - abs-pg
+    addInstruction(32, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(ALS0, ALS1, ALB, ME, ALW, FW)) // ADC - abs-pg
 
     addInstruction(33, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALB, ME, ALW, FW)) // SBC - imm
     addInstruction(33, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALB, ALC, ME, ALW, FW)) // SBC - imm
-    addInstruction(34, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(PCC, ALS0, ALB, ME, ALW, FW)) // SBC - abs-c
-    addInstruction(34, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(PCC, ALS0, ALB, ALC, ME, ALW, FW)) // SBC - abs-c
-    addInstruction(35, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(PCC, ALS0, ALB, ME, ALW, FW)) // SBC - abs-pg
-    addInstruction(35, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(PCC, ALS0, ALB, ALC, ME, ALW, FW)) // SBC - abs-pg
+    addInstruction(34, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(ALS0, ALB, ME, ALW, FW)) // SBC - abs-c
+    addInstruction(34, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(ALS0, ALB, ALC, ME, ALW, FW)) // SBC - abs-c
+    addInstruction(35, FlagsState.CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(ALS0, ALB, ME, ALW, FW)) // SBC - abs-pg
+    addInstruction(35, FlagsState.NOT_CARRY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(ALS0, ALB, ALC, ME, ALW, FW)) // SBC - abs-pg
 
     addInstruction(40, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(AO, ME, MW)) // STA - abs-c
     addInstruction(41, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, MALI), listOf(CO, MAHI), listOf(BO, ME, MW)) // STB - abs-c
@@ -99,27 +99,21 @@ fun setupInstructions() {
     addInstruction(51, FlagsState.ANY, listOf(BO, AI)) // TBA (transfer B -> A)
 
     addInstruction(250, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, DI)) // DPI (display instruction) - imm
-    addInstruction(251, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALS1, ALB, ME, ALW, FW), listOf(ALO, DRS, DI)) // DPD b (display data) - idx-abs-pg
+    addInstruction(251, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ALS0, ALS1, ALB, ME, ALW, FW), listOf(ALO, MALI), listOf(ME, DRS, DI)) // DPD b (display data) - idx-abs-pg
+    addInstruction(252, FlagsState.ANY, listOf(PCLO, MALI), listOf(PCC, ME, DRS, DI), listOf(ALO, DRS, DI)) // DPD (display data) - imm
 }
 
 fun addInstruction(opcode: Int, flagsState: FlagsState, vararg controlSignals: List<ControlSignal>) {
     for ((i, signalList) in controlSignals.withIndex()) {
         for (flag in 0..15) {
             if (!flagsState.matchFlags(flag)) continue
-            if (i == 0) signals[(flag shl 11) + (3 shl 8) + opcode] = 0x3F38FFEF38
-            addMicroInstruction(opcode, i + 3, flag, *signalList.toTypedArray())
-            if (i == controlSignals.size - 1) addMicroInstruction(opcode, i + 3, flag, TR)
+            val address: Int = (flag shl 11) + ((i + 3) shl 8) + opcode
+            if (i == 0) signals[address] = 0x3F38FFEF38
+            addMicroInstruction(address, *signalList.toTypedArray())
+            if (i == controlSignals.size - 1) addMicroInstruction(address, TR)
+            //if (opcode == 22) println("Data at address $address (${address.toString(2).padStart(15, '0')}) (flags: ${flag.toString(2).padStart(4, '0')}, timer: ${i + 3}) is ${signals[address].toString(16)} (${signals[address].toString(2).padStart(40, '0').substring(24..31)})")
         }
     }
-}
-
-fun addMicroInstruction(opcode: Int, cycle: Int, flags: Int, vararg controlSignals: ControlSignal) {
-    var address = flags
-    address = address shl 3
-    address += cycle
-    address = address shl 8
-    address += opcode
-    addMicroInstruction(address, *controlSignals)
 }
 
 fun addMicroInstruction(address: Int, vararg controlSignals: ControlSignal) {
@@ -137,7 +131,11 @@ fun generateFile(romIndex: Int) {
         //values += it.extractBits(8, romIndex * 8).toString(16)
         values += String.format("%02x", it.extractBits(8, romIndex * 8))
     }
-    File("microcode$romIndex").writeText(values)
+
+    val file = File("microcode$romIndex")
+    if (file.exists() && file.readText() == values) {
+        println("Microcode for EEPROM #$romIndex didn't change")
+    } else file.writeText(values)
 }
 
 /**

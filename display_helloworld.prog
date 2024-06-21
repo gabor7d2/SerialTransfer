@@ -1,0 +1,35 @@
+dpi #01 // Clear+reset display
+0000: fa01
+dpi #38 // Function set (8-bit, 2 lines, 5x8 char size)
+0002: fa38
+dpi #0e // Display on, cursor on, blinking off
+0004: fa0e
+
+ldb #0 // Load B reg with 0
+0006: 0200
+
+display_loop:
+dpd b #$19 // Input data to display from memory location (0x19 + B reg)
+0008: fb19
+inb // Increase B
+000a: 0b
+sbc $18 // Subtract the number at memory loc 0x18 from B reg's contents
+000b: 2318
+bcc :display_loop // Jump to address 0x08 if carry is clear (not set)
+000d: 1608
+
+lda #6 // Load the value 6 into A reg
+000f: 0106
+ldb #1 // Load the value 1 into B reg
+0011: 0201
+ldc #128 // Load the value 128 into C reg
+0013: 0380
+
+nop_loop:
+jmp :nop_loop
+0015: 140015
+
+var char_size = 12 // Length of the following character array
+0018: 0c
+"Hello World!"
+0019: 48656c6c6f20576f726c6421

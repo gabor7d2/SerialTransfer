@@ -26,6 +26,8 @@ fun main(args: Array<String>) {
         if (arg == "-genMicrocode") genMicrocode = true
     }
 
+    MultiplexedDisplay().generateFile()
+
     if (genMicrocode) {
         setupInstructions()
         for (i in 0..4) generateFile(i)

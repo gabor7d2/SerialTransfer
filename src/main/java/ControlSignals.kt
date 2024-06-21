@@ -39,7 +39,7 @@ enum class ControlSignal(val value: Long, val inverted: Boolean = true) {
     ME(0x1000000000),
     MW(0x2000000000),
     MS(0x4000000000, false),
-    PG_OVRD(0x8000000000, false);
+    PGO(0x8000000000, false);
 }
 
 val ALS0 = ControlSignal.ALS0
@@ -81,4 +81,4 @@ val MALI = ControlSignal.MALI
 val ME = ControlSignal.ME
 val MW = ControlSignal.MW
 val MS = ControlSignal.MS
-val PG_OVRD = ControlSignal.PG_OVRD
+val PGO = ControlSignal.PGO
